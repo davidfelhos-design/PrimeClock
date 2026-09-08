@@ -1,0 +1,2398 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Prime Clock</title>
+
+<style>
+
+/* =====================================================
+   BASIC SETTINGS
+===================================================== */
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+    background: #101820;
+    color: white;
+    font-family: Arial, sans-serif;
+    text-align: center;
+}
+
+h1 {
+    margin-top: 20px;
+    margin-bottom: 5px;
+    letter-spacing: 3px;
+}
+
+.subtitle {
+    color: #b8c4cc;
+    margin-bottom: 12px;
+}
+
+
+/* =====================================================
+   HOW IT WORKS LINK
+===================================================== */
+
+#howLink {
+
+    display: inline-block;
+    margin-bottom: 20px;
+
+    color: #ffffff;
+    font-size: 16px;
+    font-weight: bold;
+
+    text-decoration: none;
+
+    border-bottom: 1px solid #ffffff;
+
+    padding-bottom: 3px;
+
+    transition: 0.2s;
+
+}
+
+#howLink:hover {
+
+    color: #2ecc71;
+    border-color: #2ecc71;
+
+}
+
+
+/* =====================================================
+   MAIN LAYOUT
+===================================================== */
+
+#container {
+
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+
+    gap: 40px;
+
+    flex-wrap: wrap;
+
+    padding: 20px;
+
+}
+
+
+/* =====================================================
+   CLOCK
+===================================================== */
+
+#clockArea {
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+}
+
+
+#clock {
+
+    width: 520px;
+    height: 520px;
+
+    border: 8px solid white;
+    border-radius: 50%;
+
+    position: relative;
+
+    background:
+        radial-gradient(
+            circle,
+            #1d2d38 0%,
+            #16242d 70%,
+            #101820 100%
+        );
+
+    box-shadow:
+        0 0 30px rgba(255,255,255,0.1);
+
+    transition:
+        border-color 0.12s ease,
+        box-shadow 0.12s ease;
+
+}
+
+
+/* =====================================================
+   PRIME FLASH - CLOCK
+===================================================== */
+
+#clock.primeFlash {
+
+    border-color: red;
+
+    box-shadow:
+        0 0 35px red,
+        0 0 60px rgba(255,0,0,0.6);
+
+}
+
+
+/* =====================================================
+   STARTING POINT
+===================================================== */
+
+#zeroPoint {
+
+    position: absolute;
+
+    width: 18px;
+    height: 18px;
+
+    background: white;
+
+    border-radius: 50%;
+
+    top: -1px;
+
+    left: 50%;
+
+    transform: translateX(-50%);
+
+    box-shadow:
+        0 0 15px white;
+
+}
+
+
+/* =====================================================
+   HANDS
+===================================================== */
+
+.hand {
+
+    position: absolute;
+
+    left: 50%;
+    top: 50%;
+
+    width: 1.3px;
+    height: 210px;
+
+    border-radius: 10px;
+
+    transform-origin: 50% 100%;
+
+    pointer-events: none;
+
+}
+
+
+/* =====================================================
+   HAND 1
+===================================================== */
+
+.hand1 {
+
+    width: 6px;
+    height: 230px;
+
+    background: white;
+
+    box-shadow:
+        0 0 10px white;
+
+}
+
+
+/* =====================================================
+   CENTER
+===================================================== */
+
+#centerDot {
+
+    position: absolute;
+
+    width: 20px;
+    height: 20px;
+
+    background: white;
+
+    border-radius: 50%;
+
+    left: 50%;
+    top: 50%;
+
+    transform:
+        translate(-50%, -50%);
+
+    z-index: 100;
+
+}
+
+
+/* =====================================================
+   INFORMATION PANEL
+===================================================== */
+
+#info {
+
+    width: 360px;
+
+    background: #182630;
+
+    padding: 25px;
+
+    border-radius: 20px;
+
+    text-align: left;
+
+    box-shadow:
+        0 0 20px rgba(0,0,0,0.4);
+
+}
+
+
+/* =====================================================
+   COUNTER
+===================================================== */
+
+#counter {
+
+    font-size: 70px;
+
+    text-align: center;
+
+    font-weight: bold;
+
+    margin-bottom: 5px;
+
+    color: white;
+
+    transition:
+        color 0.12s ease,
+        text-shadow 0.12s ease;
+
+}
+
+
+/* =====================================================
+   PRIME FLASH - COUNTER
+===================================================== */
+
+#counter.primeFlash {
+
+    color: red;
+
+    text-shadow:
+        0 0 15px red,
+        0 0 30px rgba(255,0,0,0.7);
+
+}
+
+
+.label {
+
+    text-align: center;
+
+    color: #b8c4cc;
+
+    margin-bottom: 25px;
+
+}
+
+
+h2 {
+
+    margin-top: 15px;
+
+    font-size: 20px;
+
+}
+
+
+/* =====================================================
+   PRIME LIST
+===================================================== */
+
+#primeList {
+
+    font-size: 22px;
+
+    line-height: 1.8;
+
+    max-height: 180px;
+
+    overflow-y: auto;
+
+    padding: 10px;
+
+    background: #101820;
+
+    border-radius: 10px;
+
+}
+
+
+/* =====================================================
+   CONTROLS
+===================================================== */
+
+button {
+
+    width: 100%;
+
+    padding: 13px;
+
+    margin-top: 10px;
+
+    font-size: 17px;
+
+    cursor: pointer;
+
+    border: none;
+
+    border-radius: 8px;
+
+    color: white;
+
+    font-weight: bold;
+
+}
+
+
+#startButton {
+
+    background: #2ecc71;
+
+}
+
+
+#pauseButton {
+
+    background: #e67e22;
+
+}
+
+
+#resetButton {
+
+    background: #e74c3c;
+
+}
+
+
+#loadButton {
+
+    background: #3498db;
+
+}
+
+
+/* =====================================================
+   SPEED
+===================================================== */
+
+.speedBox {
+
+    margin-top: 25px;
+
+    padding: 15px;
+
+    background: #101820;
+
+    border-radius: 10px;
+
+}
+
+
+#speedSlider {
+
+    width: 100%;
+
+    margin-top: 12px;
+
+}
+
+
+#speedValue {
+
+    font-size: 22px;
+
+    color: #2ecc71;
+
+    font-weight: bold;
+
+}
+
+
+/* =====================================================
+   JUMP TO REVOLUTION
+===================================================== */
+
+.jumpBox {
+
+    margin-top: 25px;
+
+    padding: 15px;
+
+    background: #101820;
+
+    border-radius: 10px;
+
+}
+
+
+#jumpInput {
+
+    width: 100%;
+
+    margin-top: 12px;
+
+    padding: 12px;
+
+    border-radius: 6px;
+
+    border: none;
+
+    font-size: 18px;
+
+    text-align: center;
+
+    background: #263742;
+
+    color: white;
+
+}
+
+
+#jumpStatus {
+
+    margin-top: 10px;
+
+    text-align: center;
+
+    color: #b8c4cc;
+
+    font-size: 13px;
+
+}
+
+
+/* =====================================================
+   HAND STATUS
+===================================================== */
+
+#handsInfo {
+
+    margin-top: 20px;
+
+    font-size: 14px;
+
+    line-height: 1.7;
+
+    max-height: 180px;
+
+    overflow-y: auto;
+
+    background: #101820;
+
+    padding: 12px;
+
+    border-radius: 10px;
+
+}
+
+
+.zero {
+
+    color: #2ecc71;
+
+    font-weight: bold;
+
+}
+
+
+/* =====================================================
+   NEW PRIME MESSAGE
+===================================================== */
+
+#primeEvent {
+
+    margin-top: 15px;
+
+    min-height: 35px;
+
+    font-size: 20px;
+
+    font-weight: bold;
+
+    color: #2ecc71;
+
+}
+
+
+/* =====================================================
+   DOCUMENTATION SECTION
+===================================================== */
+
+#documentation {
+
+    width: 90%;
+
+    max-width: 1000px;
+
+    margin: 70px auto 0 auto;
+
+    padding: 45px;
+
+    text-align: left;
+
+    background: #182630;
+
+    border-radius: 20px;
+
+    box-shadow:
+        0 0 30px rgba(0,0,0,0.35);
+
+}
+
+
+#documentation h2 {
+
+    font-size: 32px;
+
+    text-align: center;
+
+    margin-top: 0;
+
+    margin-bottom: 30px;
+
+    letter-spacing: 1px;
+
+}
+
+
+#documentation h3 {
+
+    font-size: 23px;
+
+    color: #2ecc71;
+
+    margin-top: 35px;
+
+}
+
+
+#documentation p {
+
+    color: #d5dde2;
+
+    font-size: 17px;
+
+    line-height: 1.8;
+
+}
+
+
+#documentation strong {
+
+    color: white;
+
+}
+
+
+.highlightBox {
+
+    margin-top: 25px;
+
+    margin-bottom: 25px;
+
+    padding: 25px;
+
+    background: #101820;
+
+    border-left: 5px solid #2ecc71;
+
+    border-radius: 10px;
+
+}
+
+
+.highlightBox p {
+
+    margin: 10px 0;
+
+}
+
+
+#whoIAm {
+
+    margin-top: 50px;
+
+    padding-top: 35px;
+
+    border-top: 1px solid #50606b;
+
+}
+
+
+.email {
+
+    color: #2ecc71;
+
+    font-size: 18px;
+
+    font-weight: bold;
+
+    text-decoration: none;
+
+}
+
+
+.email:hover {
+
+    text-decoration: underline;
+
+}
+
+
+.date {
+
+    text-align: center;
+
+    color: #8e9ba3;
+
+    margin-top: 50px;
+
+    font-size: 14px;
+
+}
+
+
+/* =====================================================
+   MOBILE
+===================================================== */
+
+@media (max-width: 600px) {
+
+    #clock {
+
+        width: 90vw;
+        height: 90vw;
+
+    }
+
+    #documentation {
+
+        width: 94%;
+        padding: 25px;
+
+    }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<h1>PRIME CLOCK</h1>
+
+
+<div class="subtitle">
+
+Hand 1 generates the positive integers through its rotations.
+New primes appear as new hands when none of the existing prime
+hands are at the starting position as Hand 1 completes the next revolution.
+
+</div>
+
+
+<a id="howLink" href="#documentation">
+
+    How the Prime Clock Works ↓
+
+</a>
+
+
+
+<div id="container">
+
+
+<!-- =====================================================
+     CLOCK
+===================================================== -->
+
+<div id="clockArea">
+
+
+    <div id="clock">
+
+
+        <div id="zeroPoint"></div>
+
+
+        <div
+            id="hand1"
+            class="hand hand1">
+        </div>
+
+
+        <div id="centerDot"></div>
+
+
+    </div>
+
+
+    <div id="primeEvent"></div>
+
+
+</div>
+
+
+
+<!-- =====================================================
+     INFORMATION
+===================================================== -->
+
+<div id="info">
+
+
+    <div id="counter">
+
+        1
+
+    </div>
+
+
+    <div class="label">
+
+        Revolutions of Hand 1
+
+    </div>
+
+
+
+    <h2>Discovered Primes</h2>
+
+
+    <div id="primeList">
+
+        No prime hands yet
+
+    </div>
+
+
+
+    <!-- CONTROLS -->
+
+
+    <h2>Controls</h2>
+
+
+    <button id="startButton">
+
+        ▶ START
+
+    </button>
+
+
+    <button id="pauseButton">
+
+        ⏸ PAUSE
+
+    </button>
+
+
+    <button id="resetButton">
+
+        ↺ RESET
+
+    </button>
+
+
+
+    <!-- JUMP TO REVOLUTION -->
+
+
+    <div class="jumpBox">
+
+
+        <b>Jump to Revolution</b>
+
+
+        <input
+            type="number"
+            id="jumpInput"
+            min="1"
+            step="1"
+            value="1"
+            placeholder="Enter revolution number"
+        >
+
+
+        <button id="loadButton">
+
+            LOAD CLOCK
+
+        </button>
+
+
+        <div id="jumpStatus">
+
+            Enter any positive integer
+
+        </div>
+
+
+    </div>
+
+
+
+    <!-- SPEED -->
+
+
+    <div class="speedBox">
+
+
+        <b>Speed of Hand 1</b>
+
+
+        <br>
+
+
+        <input
+            type="range"
+            id="speedSlider"
+            min="0.25"
+            max="5"
+            step="0.25"
+            value="1"
+        >
+
+
+        <div>
+
+            One revolution:
+
+            <span id="speedValue">
+
+                1.00 seconds
+
+            </span>
+
+        </div>
+
+
+    </div>
+
+
+
+    <!-- HAND STATUS -->
+
+
+    <h2>Hand Status</h2>
+
+
+    <div id="handsInfo"></div>
+
+
+</div>
+
+
+</div>
+
+
+
+<!-- =====================================================
+     DOCUMENTATION
+===================================================== -->
+
+<div id="documentation">
+
+
+    <h2>
+
+        Prime Clock: A Visual Framework for Prime Periodicity
+
+    </h2>
+
+
+    <p>
+
+        <strong>Prime Clock</strong> is an experimental visual and structural
+        framework for exploring how prime numbers relate to recurring periodic
+        patterns within the positive integers.
+
+    </p>
+
+
+    <p>
+
+        The project represents the sequence of positive integers as the continuous
+        motion of a reference hand and represents each discovered prime as an
+        additional periodic hand on one common analog clock. The purpose is not to
+        replace established number theory, but to provide a visual and intuitive
+        perspective on familiar mathematical relationships.
+
+    </p>
+
+
+    <div class="highlightBox">
+
+        <p><strong>Prime Clock Version 1.0</strong></p>
+
+        <p>First public release: September 8, 2026</p>
+
+        <p>Author: Dávid Felhős</p>
+
+    </div>
+
+
+    <h3>
+
+        1. Hand 1 Generates the Positive Integers
+
+    </h3>
+
+
+    <p>
+
+        Hand 1 is the reference hand of the system. Every complete revolution
+        represents the next positive integer. The counter beside the clock shows
+        how many complete revolutions Hand 1 has made.
+
+    </p>
+
+
+    <div class="highlightBox">
+
+        <p>
+
+            1 → 2 → 3 → 4 → 5 → 6 → 7 → 8 → ...
+
+        </p>
+
+    </div>
+
+
+    <h3>
+
+        2. Prime Hands Represent Prime Periods
+
+    </h3>
+
+
+    <p>
+
+        When a prime number <strong>p</strong> is introduced into the model,
+        it is represented by a new hand. That hand rotates at
+        <strong>1/p</strong> of the speed of Hand 1.
+
+    </p>
+
+
+    <p>
+
+        Consequently, Hand 2 completes one revolution while Hand 1 completes
+        two revolutions, Hand 3 completes one revolution while Hand 1 completes
+        three revolutions, and the same rule applies to every prime.
+
+    </p>
+
+
+    <div class="highlightBox">
+
+        <p>Hand 2 → 1 revolution every 2 time units</p>
+
+        <p>Hand 3 → 1 revolution every 3 time units</p>
+
+        <p>Hand 5 → 1 revolution every 5 time units</p>
+
+        <p>Hand p → 1 revolution every p time units</p>
+
+    </div>
+
+
+    <h3>
+
+        3. The Common Starting Position
+
+    </h3>
+
+
+    <p>
+
+        The top of the clock is the common reference position. A prime hand
+        returns to this position whenever the current integer is divisible by
+        the prime represented by that hand.
+
+    </p>
+
+
+    <div class="highlightBox">
+
+        <p>At 6, Hand 2 and Hand 3 are at the starting position.</p>
+
+        <p>At 10, Hand 2 and Hand 5 are at the starting position.</p>
+
+        <p>At 15, Hand 3 and Hand 5 are at the starting position.</p>
+
+    </div>
+
+
+    <h3>
+
+        4. How a New Prime Hand Appears
+
+    </h3>
+
+
+    <p>
+
+        When Hand 1 completes a revolution and reaches the next integer, the
+        model checks the previously established prime hands.
+
+    </p>
+
+
+    <p>
+
+        If the current integer is divisible by an earlier prime, at least one
+        existing prime hand is at the common starting position. If no previously
+        established prime hand returns to that position, the integer is prime and
+        the model creates a new prime hand.
+
+    </p>
+
+
+    <div class="highlightBox">
+
+        <p>No existing prime hand at the starting position</p>
+
+        <p>↓</p>
+
+        <p>A new prime hand is created</p>
+
+    </div>
+
+
+    <h3>
+
+        5. Reconstructing the Clock at Any Integer
+
+    </h3>
+
+
+    <p>
+
+        The Prime Clock can be loaded directly at any positive integer. The
+        program reconstructs the prime state without having to animate every
+        previous revolution.
+
+    </p>
+
+
+    <div class="highlightBox">
+
+        <p>For every prime p:</p>
+
+        <p><strong>position = n mod p</strong></p>
+
+    </div>
+
+
+    <p>
+
+        This makes it possible to inspect the periodic state of the model at
+        different positions in the sequence.
+
+    </p>
+
+
+    <h3>
+
+        6. A Different Perspective on Prime Numbers
+
+    </h3>
+
+
+    <p>
+
+        The sequence itself is generated by <strong>Hand 1</strong>, while the
+        prime hands represent recurring positions associated with divisibility by
+        the primes already present in the system.
+
+    </p>
+
+
+    <div class="highlightBox">
+
+        <p><strong>Hand 1 generates the sequence.</strong></p>
+
+        <p><strong>Prime hands represent periodic divisibility patterns within it.</strong></p>
+
+    </div>
+
+
+    <p>
+
+        Prime Clock is therefore primarily a framework for visual exploration:
+        it places multiple prime periods on a single moving reference system and
+        makes their simultaneous positions directly observable.
+
+    </p>
+
+
+    <h3>
+
+        7. Relation to Earlier Periodic Approaches
+
+    </h3>
+
+
+    <p>
+
+        The Prime Clock explores prime numbers through periodic motion and recurring patterns. It therefore has a broad conceptual connection with other approaches that investigate prime-related periodic structures, including work associated with Michael T. M. Emmerich.
+
+    </p>
+
+
+    <div class="highlightBox">
+
+        <p>
+
+            <strong>Earlier periodic approaches:</strong>
+            investigate prime-related periodic structures, modular states,
+            cycles and recurring patterns.
+
+        </p>
+
+
+        <p>
+
+            <strong>The Prime Clock:</strong>
+            uses Hand 1 as a continuously moving reference that generates the positive integers through successive revolutions, while prime periods are represented as rotating hands on one common analog clock.
+
+        </p>
+
+    </div>
+
+
+    <p>
+
+        The Prime Clock provides a visual representation of a simple structural question:
+
+    </p>
+
+
+    <p>
+
+        <strong>Which positions in the sequence are already identified by the periodic returns of the existing prime hands, and when does the next previously unrepresented position correspond to a new prime?</strong>
+
+    </p>
+
+
+    <h3>
+
+        8. Scope of This Project
+
+    </h3>
+
+
+    <p>
+
+        This website presents an original visualization and framework developed
+        for the Prime Clock project. The underlying mathematical concepts include
+        established ideas such as prime numbers, divisibility and modular
+        periodicity.
+
+    </p>
+
+
+    <p>
+
+        The project does <strong>not</strong> claim to replace existing number
+        theory or to provide a new proof concerning the distribution of prime
+        numbers. Its purpose is to document and explore this particular
+        representation and the observations that may arise from it.
+
+    </p>
+
+
+    <div id="whoIAm">
+
+
+        <h2>
+
+            About the Project
+
+        </h2>
+
+
+        <p>
+
+            My name is <strong>Dávid Felhős</strong>. I am an engineer and the
+            creator of the Prime Clock project.
+
+        </p>
+
+
+        <p>
+
+            The project began with a simple question: could the relationship
+            between prime numbers, divisibility and periodicity be represented in
+            a more visual and intuitive way?
+
+        </p>
+
+
+        <p>
+
+            That question gradually developed into the Prime Clock: a common
+            analog-clock representation in which the positive integers are
+            generated by one reference hand and prime periods are represented by
+            additional rotating hands.
+
+        </p>
+
+
+        <p>
+
+            The project was developed independently as an exploratory work using
+            programming and artificial intelligence as development tools. AI
+            assistance contributed to implementation and exploration, while the
+            project concept, direction and final selection of ideas are documented
+            as part of the Prime Clock project.
+
+        </p>
+
+
+        <p>
+
+            <strong>Contact</strong>
+
+            <br><br>
+
+            <button
+                id="emailButton"
+                class="email"
+                type="button"
+                style="background:none;border:none;padding:0;cursor:pointer;"
+            >
+                Show email address
+            </button>
+
+        </p>
+
+
+        <p id="emailNotice" style="font-size:14px;color:#8e9ba3;display:none;">
+
+            The address is revealed on request to reduce automated email harvesting.
+
+        </p>
+
+
+    </div>
+
+
+    <div class="date">
+
+        Prime Clock Project — Version 1.0
+
+        <br>
+
+        First public release: September 8, 2026
+
+    </div>
+
+
+    <script>
+
+        (function () {
+
+            const emailButton =
+                document.getElementById("emailButton");
+
+            const emailNotice =
+                document.getElementById("emailNotice");
+
+            if (!emailButton) return;
+
+            emailButton.addEventListener(
+                "click",
+                function () {
+
+                    const codes = [
+                        100,97,118,105,100,46,102,101,108,104,111,115,
+                        64,103,109,97,105,108,46,99,111,109
+                    ];
+
+                    const address =
+                        String.fromCharCode(...codes);
+
+                    const link =
+                        document.createElement("a");
+
+                    link.className = "email";
+
+                    link.href =
+                        "mailto:" + address;
+
+                    link.textContent =
+                        address;
+
+                    emailButton.replaceWith(link);
+
+                    if (emailNotice) {
+                        emailNotice.style.display = "block";
+                    }
+
+                }
+            );
+
+        })();
+
+    </script>
+
+
+</div>
+
+
+<script>
+
+/* =========================================================
+   HTML ELEMENTS
+========================================================= */
+
+const clock =
+    document.getElementById("clock");
+
+const hand1 =
+    document.getElementById("hand1");
+
+const counter =
+    document.getElementById("counter");
+
+const primeList =
+    document.getElementById("primeList");
+
+const handsInfo =
+    document.getElementById("handsInfo");
+
+const primeEvent =
+    document.getElementById("primeEvent");
+
+const speedSlider =
+    document.getElementById("speedSlider");
+
+const speedValue =
+    document.getElementById("speedValue");
+
+const jumpInput =
+    document.getElementById("jumpInput");
+
+const jumpStatus =
+    document.getElementById("jumpStatus");
+
+
+/* =========================================================
+   STATE
+========================================================= */
+
+let n = 1;
+
+let primes = [];
+
+let running = false;
+
+let lastTime = null;
+
+let fraction = 0;
+
+let cycleDuration = 1;
+
+
+/* =========================================================
+   COLORS
+========================================================= */
+
+const colors = [
+
+    "#ff4d4d",
+    "#4da6ff",
+    "#ffd633",
+    "#cc66ff",
+    "#00e699",
+    "#ff9933",
+    "#ff66b3",
+    "#66ff66",
+    "#00cccc",
+    "#ff8080",
+    "#9999ff",
+    "#ffff66",
+    "#ff99cc",
+    "#66ccff"
+
+];
+
+
+/* =========================================================
+   CREATE PRIME HAND
+========================================================= */
+
+function createHand(prime, index) {
+
+
+    const hand =
+        document.createElement("div");
+
+
+    hand.className =
+        "hand";
+
+
+    hand.id =
+        "hand_" + prime;
+
+
+    hand.style.background =
+        colors[index % colors.length];
+
+
+    const maximumLength = 210;
+
+    const minimumLength = 37.8;
+
+    const decayRate = 0.025;
+
+
+    const length =
+
+        minimumLength
+
+        +
+
+        (
+
+            maximumLength
+            -
+            minimumLength
+
+        )
+
+        *
+
+        Math.exp(
+            -decayRate
+            *
+            index
+        );
+
+
+    hand.style.height =
+        length + "px";
+
+
+    hand.style.width =
+        "1.3px";
+
+
+    hand.style.boxShadow =
+        "0 0 6px "
+        +
+        colors[index % colors.length];
+
+
+    clock.appendChild(hand);
+
+}
+
+
+/* =========================================================
+   PRIME FLASH
+========================================================= */
+
+function flashPrimeClock() {
+
+
+    clock.classList.add("primeFlash");
+
+    counter.classList.add("primeFlash");
+
+
+    setTimeout(
+
+        function() {
+
+            clock.classList.remove("primeFlash");
+
+            counter.classList.remove("primeFlash");
+
+        },
+
+        180
+
+    );
+
+}
+
+
+/* =========================================================
+   UPDATE HAND POSITIONS
+========================================================= */
+
+function updateHands() {
+
+
+    const actualTime =
+        n + fraction;
+
+
+    const angle1 =
+        fraction * 360;
+
+
+    hand1.style.transform =
+        "translate(-50%, -100%) rotate("
+        +
+        angle1
+        +
+        "deg)";
+
+
+    primes.forEach(
+
+        function(prime) {
+
+
+            const hand =
+                document.getElementById(
+                    "hand_" + prime
+                );
+
+
+            const turns =
+                actualTime / prime;
+
+
+            const position =
+                turns % 1;
+
+
+            const angle =
+                position * 360;
+
+
+            hand.style.transform =
+                "translate(-50%, -100%) rotate("
+                +
+                angle
+                +
+                "deg)";
+
+        }
+
+    );
+
+}
+
+
+/* =========================================================
+   COMPLETE TIME UNIT
+========================================================= */
+
+function completeCycle() {
+
+
+    n++;
+
+
+    counter.textContent =
+        n;
+
+
+    let covered = false;
+
+
+    for (
+
+        let prime
+        of primes
+
+    ) {
+
+
+        if (
+
+            n % prime === 0
+
+        ) {
+
+            covered = true;
+
+            break;
+
+        }
+
+    }
+
+
+    /* NEW PRIME */
+
+    if (!covered && n > 1) {
+
+
+        primes.push(n);
+
+
+        createHand(
+            n,
+            primes.length - 1
+        );
+
+
+        flashPrimeClock();
+
+
+        primeEvent.textContent =
+            "NEW PRIME HAND: "
+            +
+            n;
+
+
+        setTimeout(
+
+            function() {
+
+                primeEvent.textContent =
+                    "";
+
+            },
+
+            1200
+
+        );
+
+    }
+
+
+    updatePrimeList();
+
+    updateHandsInfo();
+
+}
+
+
+/* =========================================================
+   UPDATE PRIME LIST
+========================================================= */
+
+function updatePrimeList() {
+
+
+    if (
+
+        primes.length === 0
+
+    ) {
+
+
+        primeList.innerHTML =
+            "No prime hands yet";
+
+        return;
+
+    }
+
+
+    let html = "";
+
+
+    primes.forEach(
+
+        function(prime, index) {
+
+
+            const color =
+                colors[
+                    index
+                    %
+                    colors.length
+                ];
+
+
+            html +=
+
+                '<span style="color:'
+                +
+                color
+                +
+                '; font-weight:bold;">'
+
+                +
+                prime
+
+                +
+                '</span> ';
+
+        }
+
+    );
+
+
+    primeList.innerHTML =
+        html;
+
+}
+
+
+/* =========================================================
+   UPDATE HAND STATUS
+========================================================= */
+
+function updateHandsInfo() {
+
+
+    let html =
+        "<b>Current complete state:</b><br><br>";
+
+
+    html +=
+
+        "1 → "
+        +
+        n
+        +
+        ". revolution"
+        +
+        "<br><br>";
+
+
+    if (
+
+        primes.length === 0
+
+    ) {
+
+        html +=
+            "No prime hands yet.";
+
+    }
+
+
+    primes.forEach(
+
+        function(prime) {
+
+
+            const remainder =
+                n % prime;
+
+
+            if (
+
+                remainder === 0
+
+            ) {
+
+
+                html +=
+
+                    '<span class="zero">'
+
+                    +
+                    prime
+
+                    +
+                    " → STARTING POSITION"
+
+                    +
+                    "</span><br>";
+
+            }
+
+            else {
+
+
+                html +=
+
+                    prime
+
+                    +
+                    " → "
+
+                    +
+                    remainder
+
+                    +
+                    "/"
+
+                    +
+                    prime
+
+                    +
+                    " revolution position"
+
+                    +
+                    "<br>";
+
+            }
+
+        }
+
+    );
+
+
+    handsInfo.innerHTML =
+        html;
+
+}
+
+
+/* =========================================================
+   GENERATE PRIMES
+   SIEVE OF ERATOSTHENES
+========================================================= */
+
+function generatePrimes(limit) {
+
+
+    if (limit < 2) {
+
+        return [];
+
+    }
+
+
+    const sieve =
+        new Uint8Array(limit + 1);
+
+
+    sieve[0] = 1;
+
+    sieve[1] = 1;
+
+
+    for (
+
+        let i = 2;
+
+        i * i <= limit;
+
+        i++
+
+    ) {
+
+
+        if (
+
+            sieve[i] === 0
+
+        ) {
+
+
+            for (
+
+                let j = i * i;
+
+                j <= limit;
+
+                j += i
+
+            ) {
+
+                sieve[j] = 1;
+
+            }
+
+        }
+
+    }
+
+
+    const result = [];
+
+
+    for (
+
+        let i = 2;
+
+        i <= limit;
+
+        i++
+
+    ) {
+
+
+        if (
+
+            sieve[i] === 0
+
+        ) {
+
+            result.push(i);
+
+        }
+
+    }
+
+
+    return result;
+
+}
+
+
+/* =========================================================
+   CLEAR PRIME HANDS
+========================================================= */
+
+function clearPrimeHands() {
+
+
+    document
+
+        .querySelectorAll(
+            '[id^="hand_"]'
+        )
+
+        .forEach(
+
+            function(element) {
+
+                element.remove();
+
+            }
+
+        );
+
+}
+
+
+/* =========================================================
+   LOAD CLOCK STATE
+========================================================= */
+
+function loadClockState() {
+
+
+    let target =
+        parseInt(
+            jumpInput.value
+        );
+
+
+    if (
+
+        isNaN(target)
+
+        ||
+
+        target < 1
+
+    ) {
+
+
+        jumpStatus.textContent =
+            "Please enter a positive integer.";
+
+        return;
+
+    }
+
+
+    pauseClock();
+
+
+    jumpStatus.textContent =
+        "Calculating prime hands...";
+
+
+    setTimeout(
+
+        function() {
+
+
+            /* RESET */
+
+            n =
+                target;
+
+            fraction =
+                0;
+
+            primes =
+                [];
+
+
+            clearPrimeHands();
+
+
+            /* GENERATE PRIMES */
+
+            primes =
+                generatePrimes(target);
+
+
+            /* CREATE HANDS */
+
+            primes.forEach(
+
+                function(prime, index) {
+
+
+                    createHand(
+                        prime,
+                        index
+                    );
+
+
+                }
+
+            );
+
+
+            /* UPDATE DISPLAY */
+
+            counter.textContent =
+                n;
+
+
+            primeEvent.textContent =
+                "";
+
+
+            updatePrimeList();
+
+            updateHandsInfo();
+
+            updateHands();
+
+
+            jumpStatus.textContent =
+                "Clock loaded at revolution "
+                +
+                target
+                +
+                ". Prime hands: "
+                +
+                primes.length;
+
+
+        },
+
+        50
+
+    );
+
+}
+
+
+/* =========================================================
+   MAIN ANIMATION LOOP
+========================================================= */
+
+function animate(timestamp) {
+
+
+    if (!running) {
+
+        return;
+
+    }
+
+
+    if (
+
+        lastTime === null
+
+    ) {
+
+        lastTime =
+            timestamp;
+
+    }
+
+
+    const deltaTime =
+        (
+            timestamp
+            -
+            lastTime
+        )
+        /
+        1000;
+
+
+    lastTime =
+        timestamp;
+
+
+    fraction +=
+
+        deltaTime
+        /
+        cycleDuration;
+
+
+    while (
+
+        fraction >= 1
+
+    ) {
+
+
+        fraction -= 1;
+
+
+        completeCycle();
+
+    }
+
+
+    updateHands();
+
+
+    requestAnimationFrame(
+        animate
+    );
+
+}
+
+
+/* =========================================================
+   START
+========================================================= */
+
+function startClock() {
+
+
+    if (running) {
+
+        return;
+
+    }
+
+
+    running =
+        true;
+
+
+    lastTime =
+        null;
+
+
+    requestAnimationFrame(
+        animate
+    );
+
+}
+
+
+/* =========================================================
+   PAUSE
+========================================================= */
+
+function pauseClock() {
+
+
+    running =
+        false;
+
+}
+
+
+/* =========================================================
+   RESET
+========================================================= */
+
+function resetClock() {
+
+
+    pauseClock();
+
+
+    n = 1;
+
+    fraction = 0;
+
+    primes = [];
+
+
+    clearPrimeHands();
+
+
+    clock.classList.remove(
+        "primeFlash"
+    );
+
+
+    counter.classList.remove(
+        "primeFlash"
+    );
+
+
+    counter.textContent =
+        1;
+
+
+    jumpInput.value =
+        1;
+
+
+    jumpStatus.textContent =
+        "Enter any positive integer";
+
+
+    primeEvent.textContent =
+        "";
+
+
+    updatePrimeList();
+
+    updateHandsInfo();
+
+    updateHands();
+
+}
+
+
+/* =========================================================
+   SPEED SLIDER
+========================================================= */
+
+speedSlider.addEventListener(
+
+    "input",
+
+    function() {
+
+
+        cycleDuration =
+            parseFloat(
+                speedSlider.value
+            );
+
+
+        speedValue.textContent =
+
+            cycleDuration.toFixed(2)
+
+            +
+
+            " seconds";
+
+    }
+
+);
+
+
+/* =========================================================
+   BUTTONS
+========================================================= */
+
+document
+
+    .getElementById(
+        "startButton"
+    )
+
+    .addEventListener(
+        "click",
+        startClock
+    );
+
+
+document
+
+    .getElementById(
+        "pauseButton"
+    )
+
+    .addEventListener(
+        "click",
+        pauseClock
+    );
+
+
+document
+
+    .getElementById(
+        "resetButton"
+    )
+
+    .addEventListener(
+        "click",
+        resetClock
+    );
+
+
+document
+
+    .getElementById(
+        "loadButton"
+    )
+
+    .addEventListener(
+        "click",
+        loadClockState
+    );
+
+
+/* =========================================================
+   ENTER KEY
+========================================================= */
+
+jumpInput.addEventListener(
+
+    "keydown",
+
+    function(event) {
+
+
+        if (
+
+            event.key === "Enter"
+
+        ) {
+
+            loadClockState();
+
+        }
+
+    }
+
+);
+
+
+/* =========================================================
+   INITIAL STATE
+========================================================= */
+
+updateHands();
+
+updatePrimeList();
+
+updateHandsInfo();
+
+</script>
+
+
+</body>
+
+</html>
