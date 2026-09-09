@@ -116,6 +116,11 @@ h1 {
 
     position: relative;
 
+    /* Keep animated hands inside the circular dial.
+       This prevents rendering/compositing artifacts from appearing in the white border on mobile. */
+    overflow: hidden;
+    isolation: isolate;
+
     background:
         radial-gradient(
             circle,
@@ -195,6 +200,10 @@ h1 {
     transform-origin: 50% 100%;
 
     pointer-events: none;
+
+    /* Stabilize GPU rendering of continuously rotating hands on mobile browsers. */
+    will-change: transform;
+    backface-visibility: hidden;
 
 }
 
