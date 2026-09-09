@@ -689,8 +689,17 @@ button {
 
     #clock {
 
-        width: 90vw;
-        height: 90vw;
+        width: min(90vw, 520px);
+        height: min(90vw, 520px);
+
+        box-sizing: border-box;
+        flex: 0 0 auto;
+
+    }
+
+    .hand1 {
+
+        height: 44.23%;
 
     }
 
@@ -928,54 +937,43 @@ hands are at the starting position as Hand 1 completes the next revolution.
 
     <h2>
 
-        Prime Clock: A Visual Framework for Prime Periodicity
+        How the Prime Clock Works
 
     </h2>
 
 
     <p>
 
-        <strong>Prime Clock</strong> is an experimental visual and structural
-        framework for exploring how prime numbers relate to recurring periodic
-        patterns within the positive integers.
+        The Prime Clock is a visual model for exploring the
+        appearance of prime numbers through a system of rotating
+        hands. The model starts with a single hand representing
+        the number <strong>1</strong>.
 
     </p>
-
-
-    <p>
-
-        The project represents the sequence of positive integers as the continuous
-        motion of a reference hand and represents each discovered prime as an
-        additional periodic hand on one common analog clock. The purpose is not to
-        replace established number theory, but to provide a visual and intuitive
-        perspective on familiar mathematical relationships.
-
-    </p>
-
-
-    <div class="highlightBox">
-
-        <p><strong>Prime Clock Version 1.0</strong></p>
-
-        <p>First public release: September 8, 2026</p>
-
-        <p>Author: Dávid Felhős</p>
-
-    </div>
 
 
     <h3>
 
-        1. Hand 1 Generates the Positive Integers
+        1. Hand 1 Creates Positive Integers
 
     </h3>
 
 
     <p>
 
-        Hand 1 is the reference hand of the system. Every complete revolution
-        represents the next positive integer. The counter beside the clock shows
-        how many complete revolutions Hand 1 has made.
+        Hand 1 is the reference hand of the system. Every complete
+        revolution of Hand 1 represents the next positive integer.
+
+        The counter beside the clock shows how many complete
+        revolutions Hand 1 has made.
+
+    </p>
+
+
+    <p>
+
+        In this sense, the sequence of positive integers is generated
+        simply by the passage of time:
 
     </p>
 
@@ -993,15 +991,16 @@ hands are at the starting position as Hand 1 completes the next revolution.
 
     <h3>
 
-        2. Prime Hands Represent Prime Periods
+        2. Prime Hands
 
     </h3>
 
 
     <p>
 
-        When a prime number <strong>p</strong> is introduced into the model,
-        it is represented by a new hand. That hand rotates at
+        Whenever a new prime number appears, a new hand is created.
+
+        A prime hand with value <strong>p</strong> rotates at
         <strong>1/p</strong> of the speed of Hand 1.
 
     </p>
@@ -1009,9 +1008,13 @@ hands are at the starting position as Hand 1 completes the next revolution.
 
     <p>
 
-        Consequently, Hand 2 completes one revolution while Hand 1 completes
-        two revolutions, Hand 3 completes one revolution while Hand 1 completes
-        three revolutions, and the same rule applies to every prime.
+        Therefore, the hand representing the prime 2 completes one
+        revolution while Hand 1 completes two revolutions.
+
+        The hand representing 3 completes one revolution while
+        Hand 1 completes three revolutions.
+
+        The same rule continues for every newly discovered prime.
 
     </p>
 
@@ -1031,16 +1034,17 @@ hands are at the starting position as Hand 1 completes the next revolution.
 
     <h3>
 
-        3. The Common Starting Position
+        3. The Starting Position
 
     </h3>
 
 
     <p>
 
-        The top of the clock is the common reference position. A prime hand
-        returns to this position whenever the current integer is divisible by
-        the prime represented by that hand.
+        The top of the clock represents the common starting position.
+
+        A prime hand returns to this position whenever the current
+        integer is divisible by that prime.
 
     </p>
 
@@ -1058,25 +1062,33 @@ hands are at the starting position as Hand 1 completes the next revolution.
 
     <h3>
 
-        4. How a New Prime Hand Appears
+        4. How a New Prime Appears
 
     </h3>
 
 
     <p>
 
-        When Hand 1 completes a revolution and reaches the next integer, the
-        model checks the previously established prime hands.
+        When Hand 1 completes a revolution and reaches the next
+        integer, the model checks all previously discovered prime
+        hands.
 
     </p>
 
 
     <p>
 
-        If the current integer is divisible by an earlier prime, at least one
-        existing prime hand is at the common starting position. If no previously
-        established prime hand returns to that position, the integer is prime and
-        the model creates a new prime hand.
+        If at least one existing prime hand is also at the starting
+        position, the number is already covered by the periodic
+        structure of an earlier prime.
+
+    </p>
+
+
+    <p>
+
+        If <strong>no previous prime hand</strong> is at the starting
+        position, a new prime hand is created.
 
     </p>
 
@@ -1094,33 +1106,57 @@ hands are at the starting position as Hand 1 completes the next revolution.
 
     <h3>
 
-        5. Reconstructing the Clock at Any Integer
+        5. Jumping to Any Revolution
 
     </h3>
 
 
     <p>
 
-        The Prime Clock can be loaded directly at any positive integer. The
-        program reconstructs the prime state without having to animate every
-        previous revolution.
+        The Prime Clock can also be loaded directly at any positive
+        integer.
+
+    </p>
+
+
+    <p>
+
+        When a revolution number is entered, the clock reconstructs
+        the complete prime state as if the animation had been running
+        continuously from revolution 1.
+
+    </p>
+
+
+    <p>
+
+        All prime hands up to the selected number are created and
+        their positions are calculated directly.
 
     </p>
 
 
     <div class="highlightBox">
 
-        <p>For every prime p:</p>
+        <p>
 
-        <p><strong>position = n mod p</strong></p>
+            For every prime p:
+
+        </p>
+
+        <p>
+
+            position = n mod p
+
+        </p>
 
     </div>
 
 
     <p>
 
-        This makes it possible to inspect the periodic state of the model at
-        different positions in the sequence.
+        This means that the clock does not need to animate every
+        previous revolution in order to reconstruct its state.
 
     </p>
 
@@ -1134,9 +1170,17 @@ hands are at the starting position as Hand 1 completes the next revolution.
 
     <p>
 
-        The sequence itself is generated by <strong>Hand 1</strong>, while the
-        prime hands represent recurring positions associated with divisibility by
-        the primes already present in the system.
+        The sequence itself is generated by <strong>Hand 1</strong>.
+        Each revolution of the reference hand creates the next
+        positive integer.
+
+    </p>
+
+
+    <p>
+
+        Prime numbers appear when none of the periodic positions
+        created by earlier prime hands reaches that integer.
 
     </p>
 
@@ -1145,30 +1189,24 @@ hands are at the starting position as Hand 1 completes the next revolution.
 
         <p><strong>Hand 1 generates the sequence.</strong></p>
 
-        <p><strong>Prime hands represent periodic divisibility patterns within it.</strong></p>
+        <p><strong>Prime hands mark periodic positions within it.</strong></p>
 
     </div>
 
 
-    <p>
-
-        Prime Clock is therefore primarily a framework for visual exploration:
-        it places multiple prime periods on a single moving reference system and
-        makes their simultaneous positions directly observable.
-
-    </p>
-
-
     <h3>
 
-        7. Relation to Earlier Periodic Approaches
+        7. Relation to Emmerich's Work
 
     </h3>
 
 
     <p>
 
-        The Prime Clock explores prime numbers through periodic motion and recurring patterns. It therefore has a broad conceptual connection with other approaches that investigate prime-related periodic structures, including work associated with Michael T. M. Emmerich.
+        The Prime Clock shares an important mathematical mechanism
+        with Michael T. M. Emmerich's Prime Clockwork: a new prime
+        period appears when none of the previously established prime
+        periods returns to its reference position.
 
     </p>
 
@@ -1177,9 +1215,10 @@ hands are at the starting position as Hand 1 completes the next revolution.
 
         <p>
 
-            <strong>Earlier periodic approaches:</strong>
-            investigate prime-related periodic structures, modular states,
-            cycles and recurring patterns.
+            <strong>Emmerich's Prime Clockwork:</strong>
+            focuses on autonomous prime clocks and extends the periodic
+            model to modular states, cycle counts and prime-based
+            representations.
 
         </p>
 
@@ -1187,7 +1226,9 @@ hands are at the starting position as Hand 1 completes the next revolution.
         <p>
 
             <strong>The Prime Clock:</strong>
-            uses Hand 1 as a continuously moving reference that generates the positive integers through successive revolutions, while prime periods are represented as rotating hands on one common analog clock.
+            uses Hand 1 as a continuously moving generator of the
+            positive integers and represents prime periods as rotating
+            hands on one common analog clock.
 
         </p>
 
@@ -1196,41 +1237,21 @@ hands are at the starting position as Hand 1 completes the next revolution.
 
     <p>
 
-        The Prime Clock provides a visual representation of a simple structural question:
+        The Prime Clock therefore asks:
 
     </p>
 
 
     <p>
 
-        <strong>Which positions in the sequence are already identified by the periodic returns of the existing prime hands, and when does the next previously unrepresented position correspond to a new prime?</strong>
-
-    </p>
-
-
-    <h3>
-
-        8. Scope of This Project
-
-    </h3>
-
-
-    <p>
-
-        This website presents an original visualization and framework developed
-        for the Prime Clock project. The underlying mathematical concepts include
-        established ideas such as prime numbers, divisibility and modular
-        periodicity.
+        <strong>Which positions are already reached by the existing prime periods?</strong>
 
     </p>
 
 
     <p>
 
-        The project does <strong>not</strong> claim to replace existing number
-        theory or to provide a new proof concerning the distribution of prime
-        numbers. Its purpose is to document and explore this particular
-        representation and the observations that may arise from it.
+        <strong>And where does a new prime period need to appear?</strong>
 
     </p>
 
@@ -1240,70 +1261,72 @@ hands are at the starting position as Hand 1 completes the next revolution.
 
         <h2>
 
-            About the Project
+            Who I Am
 
         </h2>
 
 
         <p>
 
-            My name is <strong>Dávid Felhős</strong>. I am an engineer and the
-            creator of the Prime Clock project.
+            My name is <strong>Dávid Felhős</strong>.
+            I am an engineer who created this project as a hobby,
+            with the help of artificial intelligence.
 
         </p>
 
 
         <p>
 
-            The project began with a simple question: could the relationship
-            between prime numbers, divisibility and periodicity be represented in
-            a more visual and intuitive way?
+            This project started simply because I became curious
+            about prime numbers.
 
         </p>
 
 
         <p>
 
-            That question gradually developed into the Prime Clock: a common
-            analog-clock representation in which the positive integers are
-            generated by one reference hand and prime periods are represented by
-            additional rotating hands.
+            I wanted to find a visual and intuitive way to understand
+            why prime numbers appear where they do.
+
+            That curiosity gradually developed into the Prime Clock.
 
         </p>
 
 
         <p>
 
-            The project was developed independently as an exploratory work using
-            programming and artificial intelligence as development tools. AI
-            assistance contributed to implementation and exploration, while the
-            project concept, direction and final selection of ideas are documented
-            as part of the Prime Clock project.
+            For me, this model helped to demystify one of the most
+            fascinating aspects of prime numbers: their seemingly
+            mysterious appearance within the sequence of positive
+            integers.
 
         </p>
 
 
         <p>
 
-            <strong>Contact</strong>
+            The project is not the result of a formal mathematical
+            research programme. It is an experimental visualization
+            created by an engineer exploring an idea with curiosity,
+            programming and the assistance of AI.
+
+        </p>
+
+
+        <p>
+
+            Contact:
 
             <br><br>
 
-            <button
-                id="emailButton"
+            <a
                 class="email"
-                type="button"
-                style="background:none;border:none;padding:0;cursor:pointer;"
+                href="mailto:david.felhos@gmail.com"
             >
-                Show email address
-            </button>
 
-        </p>
+                david.felhos@gmail.com
 
-
-        <p id="emailNotice" style="font-size:14px;color:#8e9ba3;display:none;">
-
-            The address is revealed on request to reduce automated email harvesting.
+            </a>
 
         </p>
 
@@ -1313,65 +1336,17 @@ hands are at the starting position as Hand 1 completes the next revolution.
 
     <div class="date">
 
-        Prime Clock Project — Version 1.0
+        Prime Clock Project
 
         <br>
 
-        First public release: September 8, 2026
+        September 8, 2026
 
     </div>
 
 
-    <script>
-
-        (function () {
-
-            const emailButton =
-                document.getElementById("emailButton");
-
-            const emailNotice =
-                document.getElementById("emailNotice");
-
-            if (!emailButton) return;
-
-            emailButton.addEventListener(
-                "click",
-                function () {
-
-                    const codes = [
-                        100,97,118,105,100,46,102,101,108,104,111,115,
-                        64,103,109,97,105,108,46,99,111,109
-                    ];
-
-                    const address =
-                        String.fromCharCode(...codes);
-
-                    const link =
-                        document.createElement("a");
-
-                    link.className = "email";
-
-                    link.href =
-                        "mailto:" + address;
-
-                    link.textContent =
-                        address;
-
-                    emailButton.replaceWith(link);
-
-                    if (emailNotice) {
-                        emailNotice.style.display = "block";
-                    }
-
-                }
-            );
-
-        })();
-
-    </script>
-
-
 </div>
+
 
 
 <script>
@@ -1453,6 +1428,59 @@ const colors = [
 
 
 /* =========================================================
+   RESPONSIVE PRIME HAND SCALING
+========================================================= */
+
+function resizePrimeHands() {
+
+    const clockDiameter =
+        clock.clientWidth || 520;
+
+    const responsiveScale =
+        Math.min(1, clockDiameter / 520);
+
+    const maximumLength = 210;
+    const minimumLength = 37.8;
+    const decayRate = 0.025;
+
+    primes.forEach(function(prime, index) {
+
+        const hand =
+            document.getElementById(
+                "hand_" + prime
+            );
+
+        if (!hand) return;
+
+        const length =
+            minimumLength
+            +
+            (
+                maximumLength
+                -
+                minimumLength
+            )
+            *
+            Math.exp(
+                -decayRate
+                *
+                index
+            );
+
+        hand.style.height =
+            (length * responsiveScale) + "px";
+
+    });
+
+}
+
+window.addEventListener(
+    "resize",
+    resizePrimeHands
+);
+
+
+/* =========================================================
    CREATE PRIME HAND
 ========================================================= */
 
@@ -1505,8 +1533,14 @@ function createHand(prime, index) {
         );
 
 
+    const clockDiameter =
+        clock.clientWidth || 520;
+
+    const responsiveScale =
+        Math.min(1, clockDiameter / 520);
+
     hand.style.height =
-        length + "px";
+        (length * responsiveScale) + "px";
 
 
     hand.style.width =
